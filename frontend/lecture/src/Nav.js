@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React,{useState} from 'react'
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -7,9 +7,18 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import axios from 'axios';
+
 
 const Nav = () => {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [state, setState] = useState({
+        email: '',
+        password: '',
+    });
+
+    const navigate = useNavigate()
+    const { email, password } = state;
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -17,6 +26,29 @@ const Nav = () => {
 
     const handleClose = () => {
         setOpen(false);
+    };
+
+    const handleChange = name => event => {
+
+        setState({ ...state, [name]: event.target.value });
+    };
+
+    const handleSubmit = event => {
+        console.log(event)
+
+        event.preventDefault();
+
+        axios.post(`http://localhost:8000/api/login`, { email, password }).then(response => {
+            console.log(response.data.access_token);
+            setOpen(false)
+            // show sucess alert
+            // alert(`Post titled ${response.data.data.title} is created`);
+            return navigate("/");
+        })
+            .catch(error => {
+                console.log(error.response);
+                alert(error.response.data.error);
+            });
     };
 
     return (
@@ -49,6 +81,8 @@ const Nav = () => {
                                 type="email"
                                 fullWidth
                                 variant="standard"
+                                onChange={handleChange('email')}
+                                value={email}
                             />
                             <TextField
                                 autoFocus
@@ -58,11 +92,13 @@ const Nav = () => {
                                 type="password"
                                 fullWidth
                                 variant="standard"
+                                onChange={handleChange('password')}
+                                value={password}
                             />
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={handleClose}>Cancel</Button>
-                            <Button onClick={handleClose}>Login</Button>
+                            <Button onClick={handleSubmit}>Login</Button>
                         </DialogActions>
                     </Dialog>
                 </li>
