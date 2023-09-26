@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -25,6 +26,30 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const Nav = () => {
     const [open, setOpen] = useState(false);
     const navigate = useNavigate()
+=======
+import React,{useState} from 'react'
+import { Link, useNavigate } from 'react-router-dom';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import axios from 'axios';
+
+
+const Nav = () => {
+    const [open, setOpen] = useState(false);
+    const [state, setState] = useState({
+        email: '',
+        password: '',
+    });
+
+    const navigate = useNavigate()
+    const { email, password } = state;
+
+>>>>>>> 4081ab83bbe6ff0f877e8a8454ccda63028534f1
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -34,6 +59,7 @@ const Nav = () => {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
 
+<<<<<<< HEAD
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -48,6 +74,31 @@ const Nav = () => {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+=======
+    const handleChange = name => event => {
+
+        setState({ ...state, [name]: event.target.value });
+    };
+
+    const handleSubmit = event => {
+        console.log(event)
+
+        event.preventDefault();
+
+        axios.post(`http://localhost:8000/api/login`, { email, password }).then(response => {
+            console.log(response.data.access_token);
+            setOpen(false)
+            // show sucess alert
+            // alert(`Post titled ${response.data.data.title} is created`);
+            return navigate("/");
+        })
+            .catch(error => {
+                console.log(error.response);
+                alert(error.response.data.error);
+            });
+    };
+
+>>>>>>> 4081ab83bbe6ff0f877e8a8454ccda63028534f1
     return (
         <>
             <AppBar position="static">
@@ -118,6 +169,7 @@ const Nav = () => {
                                     </Link>
                                 </MenuItem>
 
+<<<<<<< HEAD
                             </Menu>
                         </Box>
                         <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -217,3 +269,50 @@ const Nav = () => {
 
 
 export default Nav
+=======
+                <li className="nav-item pr-3 pt-3 pb-3">
+                    <Button variant="outlined" onClick={handleClickOpen}>
+                        Login
+                    </Button>
+                    <Dialog open={open} onClose={handleClose}>
+                        <DialogTitle>Login</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                Pls Login. hehe
+                            </DialogContentText>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="name"
+                                label="Email Address"
+                                type="email"
+                                fullWidth
+                                variant="standard"
+                                onChange={handleChange('email')}
+                                value={email}
+                            />
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="name"
+                                label="Password"
+                                type="password"
+                                fullWidth
+                                variant="standard"
+                                onChange={handleChange('password')}
+                                value={password}
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClose}>Cancel</Button>
+                            <Button onClick={handleSubmit}>Login</Button>
+                        </DialogActions>
+                    </Dialog>
+                </li>
+            </ul>
+        </div>
+    )
+}
+
+export default Nav
+>>>>>>> 4081ab83bbe6ff0f877e8a8454ccda63028534f1
