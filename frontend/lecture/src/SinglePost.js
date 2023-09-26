@@ -17,6 +17,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import Nav from './Nav';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { getToken } from './helpers';
 
 
 const ExpandMore = styled((props) => {
@@ -42,7 +43,12 @@ const SinglePost = () => {
     console.log(id);
 
     const fetchPost = () => {
-        axios.get(`http://localhost:8000/api/posts/${id}`)
+        const config = {
+            headers: {
+                authorization: `Bearer ${getToken()}`
+            }
+        }
+        axios.get(`${process.env.REACT_APP_API}/posts/${id}`, config)
             .then(response => {
                 console.log(response.data);
                 setPost(response.data);
@@ -76,7 +82,7 @@ const SinglePost = () => {
                     <CardMedia
                         component="img"
                         height="394"
-                        image="/images/chaeyoung2.jpg"
+                        image="/images/chaeyoung3.jpg"
                         alt={post.title}
                     />
                     <CardContent>

@@ -1,1 +1,1 @@
-# Our first react and laravel web app.
+# Our first react and laravel web app

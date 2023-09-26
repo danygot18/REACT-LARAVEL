@@ -8,11 +8,13 @@ import Title from './Title';
 import { Card, Container, Typography } from '@mui/material';
 import { PostList } from './PostList';
 
+import { getToken } from './helpers';
+
 function App() {
   const [posts, setPosts] = useState([]);
   const fetchPosts = () => {
     axios
-      .get(`http://localhost:8000/api/posts`)
+      .get(`${process.env.REACT_APP_API}/posts`)
       .then(response => {
         console.log(response);
         setPosts(response.data);
